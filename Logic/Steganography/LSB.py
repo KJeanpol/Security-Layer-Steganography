@@ -1,11 +1,14 @@
-#import libraries
 import sys
 import numpy as np
 from PIL import Image
+import base64
 np.set_printoptions(threshold=sys.maxsize)
+sys.path.append('../../Logic/Encrypt')
+import myBase64
 
 #encoding function
 def Encode(src, message, dest):
+    message=myBase64.base64ToString(message)
 
     img = Image.open(src, 'r')
     width, height = img.size
@@ -66,35 +69,15 @@ def Decode(src):
         else:
             message += chr(int(hidden_bits[i], 2))
     if "$t3g0" in message:
-        print("Hidden Message:", message[:-5])
+        result=message[:-5]
+        return (result)
     else:
         print("No Hidden Message Found")
 
 #main function
-def Stego():
-    print("--Welcome to $t3g0--")
-    print("1: Encode")
-    print("2: Decode")
 
-    func = input()
+def Stego_Encrypt(src,message,dest):
+    Encode(src, message, dest)
 
-    if func == '1':
-        print("Enter Source Image Path")
-        src = input()
-        print("Enter Message to Hide")
-        message = input()
-        print("Enter Destination Image Path")
-        dest = input()
-        print("Encoding...")
-        Encode(src, message, dest)
-
-    elif func == '2':
-        print("Enter Source Image Path")
-        src = input()
-        print("Decoding...")
-        Decode(src)
-
-    else:
-        print("ERROR: Invalid option chosen")
-
-Stego()
+def Stego_Decrypt(src):
+    Decode(src)
